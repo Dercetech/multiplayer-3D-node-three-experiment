@@ -1,0 +1,29 @@
+{
+  "name": "reactor-three",
+  "version": "1.0.0",
+  "description": "Experimental Node, Three & SocketIO multiplayer game engine and server",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dercetech/multiplayer-3D-node-three-experiment.git"
+  },
+  "author": "Jem",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dercetech/multiplayer-3D-node-three-experiment/issues"
+  },
+  "homepage": "https://github.com/Dercetech/multiplayer-3D-node-three-experiment#readme",
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "express": "^4.16.4",
+    "trapezo": "^1.3.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "gulp": "^4.0.0",
+    "mocha": "^6.0.2"
+  }
+}
