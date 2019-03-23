@@ -4,7 +4,7 @@
   "description": "Experimental Node, Three & SocketIO multiplayer game engine and server",
   "main": "index.js",
   "scripts": {
-    "test": ""
+    "dev": "gulp dev"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,8 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-sourcemaps": "^2.6.5",
     "mocha": "^6.0.2"
   }
 }
