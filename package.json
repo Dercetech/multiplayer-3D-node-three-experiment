@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp start",
+    "serve": "gulp serve",
     "dev": "gulp dev"
   },
   "repository": {
@@ -20,6 +21,7 @@
   "dependencies": {
     "bluebird": "^3.5.3",
     "express": "^4.16.4",
+    "socket.io": "^2.2.0",
     "trapezo": "^1.3.0"
   },
   "devDependencies": {
