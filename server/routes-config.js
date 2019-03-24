@@ -1,6 +1,13 @@
+const express = require('express');
+
 module.exports = function routesFactory(config, fourOhFourHandler) {
-  const express = require('express');
-  const path = require('path');
+  function _createAPIRoute() {
+    const api = express.Router();
+
+    api.get('/', (req, res) => res.send('API sends regards'));
+
+    return api;
+  }
 
   function configureRoutes(expressApp) {
     const { public } = config.folders;
@@ -8,11 +15,11 @@ module.exports = function routesFactory(config, fourOhFourHandler) {
     // Static contents
     expressApp.use(
       // "/",
-      express.static(config.folders.public)
+      express.static(public)
     );
 
     // API
-    // expressApp.use('/api', apiRoute);
+    expressApp.use('/api', _createAPIRoute());
 
     // Fallback to 404
     expressApp.use(fourOhFourHandler);
