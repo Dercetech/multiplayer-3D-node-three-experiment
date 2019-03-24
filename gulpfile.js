@@ -1,4 +1,6 @@
 const path = require('path');
+const spawn = require('child_process').spawn;
+
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const sourcemaps = require('gulp-sourcemaps');
@@ -30,4 +32,11 @@ gulp.task('engine:watch', () => {
   gulp.watch('engine/**/*.js', gulp.series(['engine:scss']));
 });
 
-gulp.task('dev', gulp.parallel(['engine:concat', 'engine:scss', 'engine:watch'], done => done()));
+gulp.task('dev', gulp.parallel(['engine:concat', 'engine:watch']));
+
+gulp.task('serve', done => {
+  spawn('node', ['index.js'], { stdio: 'inherit' });
+  done();
+});
+
+gulp.task('start', gulp.parallel(['dev', 'serve']), done => done());

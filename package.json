@@ -4,6 +4,7 @@
   "description": "Experimental Node, Three & SocketIO multiplayer game engine and server",
   "main": "index.js",
   "scripts": {
+    "start": "gulp start",
     "dev": "gulp dev"
   },
   "repository": {
