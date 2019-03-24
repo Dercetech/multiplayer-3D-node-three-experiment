@@ -20,9 +20,9 @@ gulp.task('engine:scss', () =>
 
 gulp.task('engine:concat', () =>
   gulp
-    .src('engine/**/*.js')
+    .src(['engine/**/!(boot)*.js', 'engine/boot.js']) // boot.js better comes at the end of the concatenated file
     .pipe(sourcemaps.init())
-    .pipe(concat('engine.js'))
+    .pipe(concat('game.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.folders.public))
 );
