@@ -4,7 +4,7 @@ class Game {
     this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
     this.camera.position.z = 3;
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    THREE.this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(this.renderer.domElement);
@@ -20,6 +20,12 @@ class Game {
     const material = new THREE.MeshPhongMaterial({ color: 0x00aaff });
     this.cube = new THREE.Mesh(geometry, material);
     this.scene.add(this.cube);
+
+    this.composer = new THREE.EffectComposer(this.renderer);
+    this.composer.addPass(new THREE.RenderPass(this.scene, this.camera));
+    this.glitchPass = new THREE.GlitchPass();
+    this.glitchPass.renderToScreen = true;
+    this.composer.addPass(this.glitchPass);
 
     this._animate();
     window.addEventListener('resize', () => this._onWindowResize(this), false);
