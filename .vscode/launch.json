@@ -4,22 +4,27 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Debug server",
       "program": "${workspaceFolder}/index.js"
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "Mocha: Run all tests",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": ["-u", "tdd", "--timeout", "3000", "--colors", "${workspaceFolder}/**/*.spec.js"],
-      "internalConsoleOptions": "openOnSessionStart",
-      "env": { "CFG_ENV": "unit-tests" }
+      "name": "Debug gulp task",
+      "program": "${workspaceFolder}/node_modules/gulp/bin/gulp.js",
+      "args": ["server:start"]
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "Mocha: active file",
+      "name": "Debug active file",
+      "program": "${file}",
+      "env": { "CFG_ENV": "tdd" }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Mocha > active file",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "stopOnEntry": false,
       "args": ["${file}", "--no-timeouts", "--colors"],
@@ -30,9 +35,11 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug active file",
-      "program": "${file}",
-      "env": { "CFG_ENV": "tdd" }
+      "name": "Mocha > run all tests",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": ["-u", "tdd", "--timeout", "3000", "--colors", "${workspaceFolder}/**/*.spec.js"],
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": { "CFG_ENV": "unit-tests" }
     }
   ]
 }
