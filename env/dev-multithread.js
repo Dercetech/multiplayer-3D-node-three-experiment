@@ -1,11 +1,11 @@
 const path = require('path');
 
-process.env.multiThread = 'no';
+process.env.multiThread = 'yes';
 
 module.exports = function diFactory() {
   const folders = {};
   folders.root = path.join(__dirname, '..');
-  folders.data = path.join(folders.root, 'test', 'data-out');
+  folders.data = path.join(folders.root, 'data');
   folders.public = path.join(folders.root, 'public');
 
   const http = {

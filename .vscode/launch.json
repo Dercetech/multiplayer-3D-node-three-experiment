@@ -5,6 +5,7 @@
       "type": "node",
       "request": "launch",
       "name": "Debug server",
+      "autoAttachChildProcesses": true,
       "program": "${workspaceFolder}/index.js"
     },
     {
