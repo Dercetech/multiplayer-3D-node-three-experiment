@@ -46,7 +46,7 @@ module.exports = function diFactory() {
       // Start game logic
       .then(() =>
         setInterval(() => {
-          locals.server.send({ type: 'TICK', payload: { counter: counter++ } });
+          // locals.server.send({ type: 'TICK', payload: { counter: counter++ } });
         }, 1000)
       )
       // Keep a reference to the loop
