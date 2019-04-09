@@ -9,6 +9,19 @@ sass.compiler = require('node-sass');
 
 const config = require('./env/dev')();
 
+gulp.task('three:concat', () =>
+  gulp
+    .src(
+      ['three.js', 'inflate.min.js', 'FBXLoader.js', 'OrbitControls.js', 'Detector.js'].map(filename =>
+        path.join('three', 'libs', filename)
+      )
+    )
+    .pipe(sourcemaps.init())
+    .pipe(concat('three.min.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(path.join(config.folders.public, 'libs')))
+);
+
 gulp.task('engine:scss', () =>
   gulp
     .src('./engine/scss/styles.scss')
@@ -30,9 +43,10 @@ gulp.task('engine:concat', () =>
 gulp.task('engine:watch', () => {
   gulp.watch('engine/**/*.js', gulp.series(['engine:concat']));
   gulp.watch('engine/**/*.js', gulp.series(['engine:scss']));
+  gulp.watch('three/libs/*.js', gulp.series(['three:concat']));
 });
 
-gulp.task('dev', gulp.parallel(['engine:concat', 'engine:watch']));
+gulp.task('dev', gulp.parallel(['engine:concat', 'engine:watch', 'three:concat']));
 
 gulp.task('serve', done => {
   spawn('node', ['index.js'], { stdio: 'inherit' });
