@@ -6,7 +6,7 @@ class Game {
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(window.innerWidth * 1, window.innerHeight * 1, false);
     document.body.appendChild(this.renderer.domElement);
 
     const ambient = new THREE.AmbientLight(0x707070);
