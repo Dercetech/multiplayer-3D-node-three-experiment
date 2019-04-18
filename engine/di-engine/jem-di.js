@@ -1,5 +1,5 @@
-const factories = {};
-const instances = {};
+// const factories = {};
+// const instances = {};
 
 const getParameterNames = aFunction => {
   // Credits to http://stackoverflow.com/users/308686/bubersson
@@ -20,23 +20,23 @@ const bindWithParams = (aFunction, params) => {
   return Function.prototype.bind.apply(aFunction, args);
 };
 
-const register = (name, factory) => {
-  factories[name] = factory;
-};
+// const register = (name, factory) => {
+//   factories[name] = factory;
+// };
 
-const resolve = () => {
-  // Obtain dependency name via reflection
-  const params = getParameterNames(callback);
+// const resolve = () => {
+//   // Obtain dependency name via reflection
+//   const params = getParameterNames(callback);
 
-  // Obtain dependencies
-  const dependencies = params.filter(param => !!param && param !== '').map(param => injector.get(param));
+//   // Obtain dependencies
+//   const dependencies = params.filter(param => !!param && param !== '').map(param => injector.get(param));
 
-  // Bind dependencies to callback function
-  const boundCallback = bindWithParams(callback, dependencies);
+//   // Bind dependencies to callback function
+//   const boundCallback = bindWithParams(callback, dependencies);
 
-  // Execute callback with injected dependencies
-  boundCallback();
-};
+//   // Execute callback with injected dependencies
+//   boundCallback();
+// };
 
 class TurboHedral {
   constructor() {
@@ -45,54 +45,63 @@ class TurboHedral {
     this._instances = {};
   }
 
+  static register(name, factory) {
+    this.factories[name] = factory;
+  }
+
+  static factories = {};
+  static instances = {};
+
+  utils = {};
+
   register(name, factory) {
     this._factories[name] = factory;
   }
 
-  _resolve(dependencyName) {}
+  // _resolve(dependencyName) {}
 
-  _resolveDependency(name) {
-    const factory = this._factories[name];
-    const dependencyNames = getParameterNames(factory);
+  // _resolveDependency(name) {
+  //   const factory = this._factories[name];
+  //   const dependencyNames = getParameterNames(factory);
 
-    const dependencies_Px = dependencyNames.map(name => this._getInstance(name));
-    return Promise.all(dependencies_Px).then(dependencies => {
-      const boundCallback = bindWithParams(factory, dependencies);
-      const instance = boundCallback();
-      return instance;
-    });
-  }
+  //   const dependencies_Px = dependencyNames.map(name => this._getInstance(name));
+  //   return Promise.all(dependencies_Px).then(dependencies => {
+  //     const boundCallback = bindWithParams(factory, dependencies);
+  //     const instance = boundCallback();
+  //     return instance;
+  //   });
+  // }
 
-  _getInstance(name) {
-    return new Promise((resolve, reject) => {
-      if (this._instances[name]) {
-        return resolve(this._instances[name]);
-      } else {
-        this._resolveDependency();
-      }
-    });
-  }
+  // _getInstance(name) {
+  //   return new Promise((resolve, reject) => {
+  //     if (this._instances[name]) {
+  //       return resolve(this._instances[name]);
+  //     } else {
+  //       this._resolveDependency();
+  //     }
+  //   });
+  // }
 
   provide(name, instance) {}
 
   resolve(callback) {
-    function promisesReduce(promises, accumulator = []) {
-      if (promises.length) {
-        const promise = promises.shift();
-        return promise
-          .then(result => [...accumulator, result])
-          .then(reAccumulator => {
-            if (promises.length) {
-              promisesReduce(promises, reAccumulator);
-            }
-            return reAccumulator;
-          });
-      } else {
-        return new Promise(resolve => resolve([]));
-      }
-    }
+    // function promisesReduce(promises, accumulator = []) {
+    //   if (promises.length) {
+    //     const promise = promises.shift();
+    //     return promise
+    //       .then(result => [...accumulator, result])
+    //       .then(reAccumulator => {
+    //         if (promises.length) {
+    //           promisesReduce(promises, reAccumulator);
+    //         }
+    //         return reAccumulator;
+    //       });
+    //   } else {
+    //     return new Promise(resolve => resolve([]));
+    //   }
+    // }
 
-    function reduceAsyncDependencies(names, accumulator = []) {
+    const reduceAsyncDependencies = (names, accumulator = []) => {
       if (names.length) {
         const name = names.shift();
         return resolveDependency(name)
@@ -106,13 +115,11 @@ class TurboHedral {
       } else {
         return new Promise(resolve => resolve([]));
       }
-    }
+    };
 
     const resolveDependencies = factory => {
       const dependencyNames = getParameterNames(factory);
-      // let dependencies_p = dependencyNames.filter(name => !!name && name !== '').map(name => resolveDependency(name));
       return reduceAsyncDependencies(dependencyNames.filter(name => !!name && name !== '')).then(dependencies => {
-        // return promisesReduce(dependencies_p).then(dependencies => {
         const boundCallback = bindWithParams(factory, dependencies);
         const instance = boundCallback();
         return instance;
@@ -140,8 +147,5 @@ class TurboHedral {
       });
 
     resolveDependencies(callback);
-    // dependencies.forEach(name => console.log('dependency ' + name));
-
-    // const dependencies = params.filter(param => !!param && param !== '').map(param => injector.get(param));
   }
 }
