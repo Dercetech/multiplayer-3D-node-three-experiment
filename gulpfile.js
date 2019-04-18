@@ -4,6 +4,7 @@ const spawn = require('child_process').spawn;
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const sourcemaps = require('gulp-sourcemaps');
+const iife = require('gulp-iife');
 const sass = require('gulp-sass');
 sass.compiler = require('node-sass');
 
@@ -31,22 +32,34 @@ gulp.task('engine:scss', () =>
     .pipe(gulp.dest(config.folders.public))
 );
 
-gulp.task('engine:concat', () =>
+gulp.task('engine:libs', () => gulp.src('libs/**/*.js').pipe(gulp.dest(path.join(config.folders.public, 'libs'))));
+
+gulp.task('engine:concat:game', () =>
   gulp
-    .src('engine/**/*.js')
+    .src(['engine/**/*.js', '!engine/loading.js'])
     .pipe(sourcemaps.init())
+    .pipe(iife())
     .pipe(concat('engine.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.folders.public))
 );
 
+gulp.task('engine:concat:loading', () =>
+  gulp
+    .src('engine/loading.js')
+    .pipe(iife())
+    .pipe(gulp.dest(config.folders.public))
+);
+gulp.task('engine:concat', gulp.parallel(['engine:concat:game', 'engine:concat:loading']));
+
 gulp.task('engine:watch', () => {
-  gulp.watch('engine/**/*.js', gulp.series(['engine:concat']));
+  gulp.watch('libs/**/*.js', gulp.parallel(['engine:libs']));
+  gulp.watch('engine/**/*.js', gulp.parallel(['engine:concat']));
   gulp.watch('engine/**/*.js', gulp.series(['engine:scss']));
   gulp.watch('three/libs/*.js', gulp.series(['three:concat']));
 });
 
-gulp.task('dev', gulp.parallel(['engine:concat', 'engine:watch', 'three:concat']));
+gulp.task('dev', gulp.parallel(['engine:concat', 'engine:libs', 'engine:watch', 'three:concat']));
 
 gulp.task('serve', done => {
   spawn('node', ['index.js'], { stdio: 'inherit' });

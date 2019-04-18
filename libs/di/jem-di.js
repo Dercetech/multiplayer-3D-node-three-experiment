@@ -38,25 +38,26 @@ const bindWithParams = (aFunction, params) => {
 //   boundCallback();
 // };
 
-class TurboHedral {
+class DI {
   constructor() {
-    console.log('[TurboHedral] I live again!');
-    this._factories = {};
+    console.log('[DI] Creating context...');
     this._instances = {};
   }
 
   static register(name, factory) {
-    this.factories[name] = factory;
-  }
-
-  static factories = {};
-  static instances = {};
-
-  utils = {};
-
-  register(name, factory) {
     this._factories[name] = factory;
   }
+
+  static _factories = {};
+  // static instances = {};
+
+  static getFactory = name => DI._factories[name];
+
+  // utils = {};
+
+  // register(name, factory) {
+  //   this._factories[name] = factory;
+  // }
 
   // _resolve(dependencyName) {}
 
@@ -129,8 +130,9 @@ class TurboHedral {
     const resolveDependency = name =>
       new Promise((resolve, reject) => {
         if (!this._instances[name]) {
-          console.log(`[TurboHedral] Dependency ${name} requested for the first time. Resolving...`);
-          const factory = this._factories[name];
+          console.log(`[DI] Dependency ${name} requested for the first time. Resolving...`);
+          // const factory = this._factories[name];
+          const factory = DI.getFactory(name);
           const result = resolveDependencies(factory);
           if (result instanceof Promise) {
             result.then(instance => {
@@ -141,7 +143,7 @@ class TurboHedral {
             resolve(instance);
           }
         } else {
-          console.log(`[TurboHedral] Dependency ${name} already known`);
+          console.log(`[DI] Dependency ${name} already known`);
           resolve(this._instances[name]);
         }
       });
