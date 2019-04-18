@@ -36,7 +36,7 @@ gulp.task('engine:libs', () => gulp.src('libs/**/*.js').pipe(gulp.dest(path.join
 
 gulp.task('engine:concat:game', () =>
   gulp
-    .src(['engine/**/*.js', '!engine/loading.js'])
+    .src(['engine/**/!(main)*.js', 'engine/main.js', '!engine/loading.js'])
     .pipe(sourcemaps.init())
     .pipe(iife())
     .pipe(concat('engine.js'))

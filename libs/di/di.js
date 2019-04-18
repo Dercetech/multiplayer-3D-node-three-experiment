@@ -32,7 +32,7 @@ class DI {
   };
 
   constructor() {
-    console.log('[DI] Creating context...');
+    // console.log('[DI] Creating context...');
     this._instances = {};
   }
 
@@ -70,7 +70,7 @@ class DI {
       new Promise((resolve, reject) => {
         try {
           if (!this._instances[name]) {
-            console.log(`[DI] Dependency ${name} requested for the first time. Resolving...`);
+            // console.log(`[DI] Dependency ${name} requested for the first time. Resolving...`);
             // const factory = this._factories[name];
             const factory = DI.getFactory(name);
             const result = resolveDependencies(factory);
