@@ -10,13 +10,27 @@ sass.compiler = require('node-sass');
 
 const config = require('./env/dev')();
 
+const browserSync = require('browser-sync').create();
+
+const reload = done => {
+  browserSync.reload();
+  done();
+};
+
 gulp.task('three:concat', () =>
   gulp
-    .src(
-      ['three.js', 'inflate.min.js', 'FBXLoader.js', 'OrbitControls.js', 'Detector.js'].map(filename =>
-        path.join('three', 'libs', filename)
-      )
-    )
+    .src([
+      ...[
+        'three.js',
+        'inflate.min.js',
+        'MTLLoader.js',
+        'OBJLoader.js',
+        'FBXLoader.js',
+        'OrbitControls.js',
+        'Detector.js'
+      ].map(filename => path.join('three', 'libs', filename)),
+      'three/includes/*.js'
+    ])
     .pipe(sourcemaps.init())
     .pipe(concat('three.min.js'))
     .pipe(sourcemaps.write())
@@ -54,15 +68,20 @@ gulp.task('engine:concat', gulp.parallel(['engine:concat:game', 'engine:concat:l
 
 gulp.task('engine:watch', () => {
   gulp.watch('libs/**/*.js', gulp.parallel(['engine:libs']));
-  gulp.watch('engine/**/*.js', gulp.parallel(['engine:concat']));
+  gulp.watch('engine/**/*.js', gulp.series(['engine:concat', reload]));
   gulp.watch('engine/**/*.js', gulp.series(['engine:scss']));
-  gulp.watch('three/libs/*.js', gulp.series(['three:concat']));
+  gulp.watch('three/**/*.js', gulp.series(['three:concat', reload]));
 });
 
 gulp.task('dev', gulp.parallel(['engine:concat', 'engine:libs', 'engine:watch', 'three:concat']));
 
 gulp.task('serve', done => {
-  spawn('node', ['index.js'], { stdio: 'inherit' });
+  // spawn('node', ['index.js'], { stdio: 'inherit' });
+  browserSync.init({
+    server: {
+      baseDir: './public'
+    }
+  });
   done();
 });
 
